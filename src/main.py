@@ -33,23 +33,27 @@ if __name__ == "__main__":
     nm_modelo = input('Digite o modelo: ')
     nm_marca = input('Digite a marca: ')
     nm_cor = input('Digite a cor: ')
+    litros = float(input('Digite o tanque: '))
+    cm = float(input('Digite o consumo medio: '))
 
     kms = float(input('Digite com quantos Kms: '))
 
-    carro1 = Carro(nm_modelo, nm_marca, nm_cor, kms, motor = False)
+    carro1 = Carro(nm_modelo, nm_marca, nm_cor, kms,False,litros,cm)
 
     print('Cadastre o segundo carro')
     nm_modelo = input('Digite o modelo: ')
     nm_marca = input('Digite a marca: ')
     nm_cor = input('Digite a cor: ')
+    litros = float(input('Digite o tanque: '))
+    cm = float(input('Digite o consumo medio: '))
 
     kms = float(input('Digite com quantos Kms: '))
-    carro2 = Carro(nm_modelo, nm_marca, nm_cor,kms, motor = False)
+    carro2 = Carro(nm_modelo, nm_marca, nm_cor,kms,False,litros,cm)
 
     '''
     Controlando os carros até eles atingirem 600 Km
     '''
-    while carro1.odometro < 600 and carro2.odometro < 600:
+    while (carro1.odometro < 600 and carro2.odometro < 600) and (carro1.tanque > 0 or carro2.tanque > 0):
         print('Deseja operar qual carro?')
         print(f'1 -{carro1.modelo}')
         print(f'2 -{carro2.modelo}')
