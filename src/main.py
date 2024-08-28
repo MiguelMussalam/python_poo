@@ -13,7 +13,7 @@ def operar_carro(carro: Carro):
             op = int(input("Digite as opcoes[1-3]: "))
 
         if op == 1:
-                carro.ligar()
+            carro.ligar()
         elif op == 2:
             carro.desligar()
         elif op == 3:
@@ -53,7 +53,7 @@ if __name__ == "__main__":
     '''
     Controlando os carros até eles atingirem 600 Km
     '''
-    while (carro1.odometro < 600 and carro2.odometro < 600) and (carro1.tanque > 0 or carro2.tanque > 0):
+    while (carro1.get_odometro() < 600 and carro2.get_odometro() < 600) and (carro1.get_tanque() > 0 or carro2.get_tanque() > 0):
         print('Deseja operar qual carro?')
         print(f'1 -{carro1.modelo}')
         print(f'2 -{carro2.modelo}')
@@ -67,9 +67,17 @@ if __name__ == "__main__":
             print("Erro!")
             print(e)
 
-    carro1.desligar()
-    carro2.desligar()
-    if carro1.odometro >= 600:
+    try:
+        carro1.desligar()
+
+    except:
+        print(f'Carro {carro1.modelo} já desligado!')
+    try:
+        carro2.desligar()
+    except:
+        print(f'Carro {carro2.modelo} já desligado!')
+
+    if carro1.get_odometro() >= 600:
         print('Carro 1 chegou ao destino primeiro.')
     else:
         print('Carro 2 chegou ao destino primeiro')
