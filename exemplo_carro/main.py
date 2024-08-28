@@ -81,5 +81,3 @@ if __name__ == "__main__":
         print('Carro 1 chegou ao destino primeiro.')
     else:
         print('Carro 2 chegou ao destino primeiro')
-
-
