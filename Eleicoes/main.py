@@ -1,35 +1,24 @@
 import pickle
 import traceback
-
+import gerenciar_urna
 from common import *
 
 FILE_ELEITORES = 'eleitores.pkl'
 FILE_CANDIDATOS = 'candidatos.pkl'
 
-def escolha_menu():
-    print('1-Gerenciar eleitores')
-    print('2-Gerenciar candidatos')
-    print('3-Sair')
-    op = int(input("Digite a opcao [1,2,3]? "))
-    while op not in (1, 2, 3):
-        op = int(input("Digite a opcao [1,2,3]? "))
-    return op
-def menu_eleitor():
+def menu():
     print("1-Novo Eleitor")
     print("2-Atualizar Eleitor")
-    print("3-Sair")
-    op = int(input("Digite a opcao [1,2,3]? "))
-    while op not in (1, 2, 3):
-        op = int(input("Digite a opcao [1,2,3]? "))
-    return op
-
-def menu_candidatos():
-    print('1-Novo candidato')
-    print('2-Listar candidatos')
-    print('3-Sair')
-    op = int(input("Digite a opcao [1,2,3]? "))
-    while op not in (1, 2, 3):
-        op = int(input("Digite a opcao [1,2,3]? "))
+    print("3-Inserir Candidato")
+    print("4-Listar Candidatos")
+    print("5-Iniciar Urna")
+    print("6-Testar Urna")
+    print("7-Emitir zeresima")
+    print("8-Encerrar urna")
+    print("9-Sair")
+    op = int(input("Digite a opcao [1 a 9]? "))
+    while op not in range(1, 10):
+        op = int(input("Digite a opcao [1 a 9]? "))
     return op
 
 def inserir_eleitor(eleitores):
@@ -41,8 +30,8 @@ def inserir_eleitor(eleitores):
     nome = input("Digite o nome: ")
     RG = input("Digite o RG: ")
     CPF = input("Digite o CPF: ")
-    secao = input("Digite a secao: ")
-    zona = input("Digite a zona: ")
+    secao = int(input("Digite a secao: "))
+    zona = int(input("Digite a zona: "))
 
     eleitor = Eleitor(nome, RG, CPF, titulo, secao, zona)
     eleitores[eleitor.get_titulo()] = eleitor
@@ -59,8 +48,8 @@ def atualizar_eleitor(eleitores):
     if titulo in eleitores:
         eleitor = eleitores[titulo]
         print(eleitor)
-        secao = input("Digite a nova secao: ")
-        zona = input("Digite a nova zona: ")
+        secao = int(input("Digite a nova secao: "))
+        zona = int(input("Digite a nova zona: "))
         eleitor.secao = secao
         eleitor.zona = zona
 
@@ -73,16 +62,16 @@ def atualizar_eleitor(eleitores):
         raise Exception('Titulo inexistente')
 
 def inserir_candidato(candidatos):
-    numero = int(input('Digite o número: '))
+    numero = int(input("Digite o número do candidato: "))
 
     if numero in candidatos:
-        raise Exception('Candidato já existente!')
+        raise Exception("Candidato já existente!")
 
     nome = input("Digite o nome: ")
     RG = input("Digite o RG: ")
     CPF = input("Digite o CPF: ")
 
-    candidato = Candidato(nome,RG,CPF,numero)
+    candidato = Candidato(nome, RG, CPF, numero)
     candidatos[candidato.get_numero()] = candidato
 
     with open(FILE_CANDIDATOS, 'wb') as arquivo:
@@ -92,13 +81,11 @@ def inserir_candidato(candidatos):
     print(candidato)
 
 def listar_candidatos(candidatos):
-    for c in candidatos.values():
-        print(c)
+    for candidato in candidatos.values():
+        print(candidato)
 
 if __name__ == "__main__":
     eleitores = {} #dicionário a chave será o titulo
-    candidatos= {} #dicionário a chave será o número
-
     try:
         print("Carregando arquivo de eleitores ...")
 
@@ -107,6 +94,8 @@ if __name__ == "__main__":
     except FileNotFoundError as fnfe:
         print(fnfe)
         print("Arquivo nao encontrado, nenhum eleitor carregado!")
+
+    candidatos = {}  # dicionário a chave será o titulo
     try:
         print("Carregando arquivo de candidatos ...")
 
@@ -117,30 +106,29 @@ if __name__ == "__main__":
         print("Arquivo nao encontrado, nenhum candidato carregado!")
 
     opcao = 1
-    while opcao in (1,2,3):
+    while opcao in range(1,10):
         try:
-            opcao = escolha_menu()
+            opcao = menu()
 
             if opcao == 1:
-                opcao = menu_eleitor()
-                if opcao == 1:
-                    inserir_eleitor(eleitores)
-                elif opcao == 2:
-                    atualizar_eleitor(eleitores)
-                elif opcao == 3:
-                    print('Saindo!')
-                    break
+                inserir_eleitor(eleitores)
             elif opcao == 2:
-                opcao = menu_candidatos()
-                if opcao == 1:
-                    inserir_candidato(candidatos)
-                elif opcao == 2:
-                    listar_candidatos(candidatos)
-                elif opcao == 3:
-                    print('Saindo!')
-                    break
+                atualizar_eleitor(eleitores)
             elif opcao == 3:
-                print("Saindo!")
+                inserir_candidato(candidatos)
+            elif opcao == 4:
+                listar_candidatos(candidatos)
+            elif opcao == 5:
+                urna = gerenciar_urna.iniciar_urna(eleitores.values(),
+                                                   candidatos.values())
+            elif opcao == 6:
+                gerenciar_urna.votar(urna)
+            elif opcao == 7:
+                gerenciar_urna.emitir_zeresima(urna)
+            elif opcao == 8:
+                gerenciar_urna.emitir_encerramento(urna)
+            elif opcao == 9:
+                print('Saindo!')
                 break
         except Exception as e:
             #traceback.print_exc()
