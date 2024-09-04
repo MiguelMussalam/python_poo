@@ -53,6 +53,7 @@ class Candidato(Pessoa):
         info += (f'Numero: {self.__numero}\n')
         return info
 
+
     def __repr__(self):
         return f"Candidato({super().__repr__()}, numero='{self.__numero})'"
 

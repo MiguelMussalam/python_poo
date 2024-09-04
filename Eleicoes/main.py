@@ -130,6 +130,7 @@ if __name__ == "__main__":
             elif opcao == 9:
                 print('Saindo!')
                 break
+
         except Exception as e:
             #traceback.print_exc()
             print(e)
